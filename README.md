@@ -8,3 +8,6 @@ This project extends [QUAST](https://github.com/ablab/quast) and its Icarus modu
 - Filtering short alignments (< 1 kb)
 - Aggregated centromere blocks
 - Unified HTML page with interactive ideogram of all chromosomes
+
+![image](https://github.com/user-attachments/assets/5ad2f241-432b-4eb0-9df1-2807ae7511d8)
+
