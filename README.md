@@ -13,9 +13,8 @@ This project extends [QUAST](https://github.com/ablab/quast) and its Icarus modu
 
 ## Example Visualizations
 ### Single assembly aligned to reference
-![Example Visualization](https://github.com/user-attachments/assets/5ad2f241-432b-4eb0-9df1-2807ae7511d8)
+![image](https://github.com/user-attachments/assets/672487a3-9a0f-4e56-a004-74fd36bf456c)
 
-![image](https://github.com/user-attachments/assets/5ad2f241-432b-4eb0-9df1-2807ae7511d8)
 
 ### Two haplotypes aligned to reference
 ![image](https://github.com/user-attachments/assets/6af022d2-feb5-4609-ba72-a34331d46878)
