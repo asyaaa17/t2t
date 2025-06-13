@@ -4,7 +4,7 @@ This project extends [QUAST](https://github.com/ablab/quast) and its Icarus modu
 
 ## Features
 
-• **Block merging**: Combines nearby alignment blocks (< 50,000 bp)  
+• **Block merging**: Combines nearby alignment blocks
 • **Alignment filtering**: Excludes short alignments (< 1,000 bp)  
 • **Centromere handling**: Aggregates centromeric alignments into unified blocks  
 • **Interactive ideogram**: Unified HTML visualization of all chromosomes  
