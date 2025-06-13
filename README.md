@@ -17,5 +17,6 @@ This project extends [QUAST](https://github.com/ablab/quast) and its Icarus modu
 ![Uploading 20-ezgif.com-video-to-gif-converter.gif…]()
 
 
+
 ### Two haplotypes aligned to reference
 ![image](https://github.com/user-attachments/assets/6af022d2-feb5-4609-ba72-a34331d46878)
