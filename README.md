@@ -15,13 +15,14 @@ This project extends [QUAST](https://github.com/ablab/quast) and its Icarus modu
 ---
 
 ## Example Visualizations
+
 ![Single haplotype alignment](ideogram.gif)
 
 ### Single haploid assembly aligned to T2T reference
-![image](https://github.com/user-attachments/assets/672487a3-9a0f-4e56-a004-74fd36bf456c)
+<img src="https://github.com/user-attachments/assets/672487a3-9a0f-4e56-a004-74fd36bf456c" width="600">
 
 ### Two haplotypes aligned to T2T reference
-![Two haplotypes alignment](https://github.com/user-attachments/assets/6af022d2-feb5-4609-ba72-a34331d46878)
+<img src="https://github.com/user-attachments/assets/6af022d2-feb5-4609-ba72-a34331d46878" width="600">
 
 ---
 
