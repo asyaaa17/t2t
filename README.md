@@ -16,12 +16,11 @@ This project extends [QUAST](https://github.com/ablab/quast) and its Icarus modu
 
 ## Configurable Options
 
-When running QUAST with this T2T visualization module, you can override two key alignment parameters via command-line flags:
+- `--max-distance` (default: 50000)  
+  Maximum distance in bp between adjacent alignment blocks to merge.
 
-| Option                 | Type  | Default  | Description                                                         |
-|------------------------|-------|----------|---------------------------------------------------------------------|
-| `--max-distance INT`   | int   | 50000    | Maximum distance (in bp) between adjacent alignment blocks to merge. Increasing this allows more distant blocks to be joined into a single segment. |
-| `--min-alignment-len INT` | int | 1000     | Minimum length (in bp) of an alignment block to keep. Shorter blocks will be filtered out and not shown in the visualization. |
+- `--min-alignment-len` (default: 1000)  
+  Minimum length in bp of an alignment block to keep.
 
 
 ## Example Visualizations
