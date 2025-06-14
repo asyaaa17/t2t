@@ -110,7 +110,7 @@ function collapseLanes(chart) {
                     triangleItem.objClass = 'misassembled';
 
                     block.triangles.push(triangleItem);
-                    items.push(triangleItem);  //  ВАЖНО! Добавляем в items для отрисовки
+                    items.push(triangleItem);
                 }
                 itemId += misassembled_ends.length;
                 numItems += misassembled_ends.length;
@@ -219,23 +219,22 @@ function createMiniItem(block, curLane, numItem, countSupplementary) {
         block.misassembledEnds = block.triangles;
     }
 
-    // Добавляем path (треугольник) для треугольных блоков
     if (block.misassembledEnds === "L") {
         let x = block.corr_start;
         let y = block.nonOverlappingLane * miniLanesHeight;
         let height = miniLanesHeight;
 
         block.path = `M${x},${y} L${x},${y + height} L${x - height / 1.5},${y + height / 2} Z`;
-        console.log(`[createMiniItem] ↪️ Left triangle path=${block.path}`);
+        console.log(`[createMiniItem] Left triangle path=${block.path}`);
     } else if (block.misassembledEnds === "R") {
         let x = block.corr_end;
         let y = block.nonOverlappingLane * miniLanesHeight;
         let height = miniLanesHeight;
 
         block.path = `M${x},${y} L${x},${y + height} L${x + height / 1.5},${y + height / 2} Z`;
-        console.log(`[createMiniItem] ↪️ Right triangle path=${block.path}`);
+        console.log(`[createMiniItem] Right triangle path=${block.path}`);
     } else if (block.misassembledEnds) {
-        console.log(`[createMiniItem] ⚠️ Unknown misassembledEnds value: ${block.misassembledEnds}`);
+        console.log(`[createMiniItem] Unknown misassembledEnds value: ${block.misassembledEnds}`);
     }
 
 

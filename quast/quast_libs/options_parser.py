@@ -558,6 +558,26 @@ def parse_options(logger, quast_args):
              dest='min_alignment',
              type='int')
          ),
+
+
+        # Порог для объединения смежных выравниваний
+        (['--max-distance'], dict(
+            dest='max_distance',
+            type='int',
+            default=qconfig.max_distance,
+            help='Maximum distance to merge alignment blocks (default: %d)' % qconfig.max_distance
+        )),
+        # Минимальная длина блока выравнивания
+        (['--min-alignment-len'], dict(
+            dest='min_alignment_len',
+            type='int',
+            default=qconfig.min_alignment_len,
+            help='Minimum length of alignment block (default: %d)' % qconfig.min_alignment_len
+        )),
+
+
+
+
         (['--min-identity'], dict(
              dest='min_IDY',
              type='float',

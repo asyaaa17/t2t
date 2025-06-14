@@ -653,26 +653,19 @@ path {
 }
 
 
-/* Стили для оси X */
 .x.axis path,
 .x.axis line {
     stroke: #333 !important;
-    /* Цвет оси */
     stroke-width: 0.5px !important;
-    /* Уменьшаем толщину */
 }
 
-/* Настроим стили для подписей */
 .x.axis text {
     font-size: 10px;
     fill: #333;
-    /* Цвет подписей */
 }
 
 
-
-/* Стили для панели с информацией */
-#info_panel {
+#stats_panel {
     position: fixed;
     top: 200px;
     right: 80px;
@@ -684,13 +677,14 @@ path {
     font-size: 14px;
 }
 
-#info_panel .info_title {
+
+#stats_panel .info_title {
     font-size: 18px;
     margin-bottom: 10px;
     color: #333;
 }
 
-#info_panel .info_content {
+#stats_panel .info_content {
     font-size: 14px;
     color: #333;
     margin-top: 10px;
@@ -704,4 +698,72 @@ path {
 .block.centromere_block {
     fill: url(#centromerePattern);
 
+}
+
+
+
+.correct {
+    fill: #059B00;
+}
+
+.misassembled {
+    fill: #D00000;
+}
+
+.unchecked_misassembly {
+    fill: #757575;
+}
+
+
+#side_panels_container {
+    position: fixed;
+    top: 150px;
+    right: 110px;
+    width: 250px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.info_box {
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+
+#legend_panel {
+    pointer-events: auto;
+}
+
+
+#legend_panel .legend-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: bold;
+}
+
+
+#legend_panel .legend-items {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Отступ между элементами легенды */
+#legend_panel .legend-item {
+  margin-bottom: 8px;
+}
+
+/* Немного сдвинем и уменьшенный текст */
+#legend_panel .legend-note {
+  display: block;
+  margin-left: 40px;
+  font-size: 0.85em;
+  margin-top: 2px;
 }

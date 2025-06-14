@@ -137,6 +137,20 @@ def natural_sort(string_):
     return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
 
 
+import os
+import re
+import logging
+def delete_individual_chr_html(viewers_dir):
+    for fname in os.listdir(viewers_dir):
+        if (re.match(r'chr\d+\.html$', fname)
+                or fname in ['chrX.html', 'chrY.html', 'chrM.html', 'contig_size_viewer.html']):
+            full_path = os.path.join(viewers_dir, fname)
+            try:
+                os.remove(full_path)
+                logging.info(f"Deleted {full_path}")
+            except Exception as e:
+                logging.warning(f"Could not delete {full_path}: {e}")
+
 
 
 def js_data_gen(assemblies, contigs_fpaths, chromosomes_length, output_dirpath, structures_by_labels,
@@ -204,7 +218,6 @@ def js_data_gen(assemblies, contigs_fpaths, chromosomes_length, output_dirpath, 
     aligned_bases_by_chr = defaultdict(list)
     aligned_assemblies = defaultdict(set)
 
-    # Собираем все данные хромосом в один объект:
     all_chromosomes_data = {}
 
 
@@ -240,7 +253,6 @@ def js_data_gen(assemblies, contigs_fpaths, chromosomes_length, output_dirpath, 
         ms_selectors_all_chromosomes[chr] = ms_selectors
         
  
-        # Сохраняем данные для этой хромосомы во временный словарь
         all_chromosomes_data[chr] = {
             "alignment_data": ref_data_str,
             "contigs_structure": contigs_structure_str,
@@ -279,8 +291,7 @@ def js_data_gen(assemblies, contigs_fpaths, chromosomes_length, output_dirpath, 
         
     combined_str += '</script>\n'
 
-# Преобразуем словарь в список для шаблона
-    # Вместо цикла по каждой хромосоме
+
     misassemblies_counter = defaultdict(int)
     for chr_name, selectors in ms_selectors_all_chromosomes.items():
         for ms_type, ms_name, ms_count in selectors:
@@ -295,8 +306,6 @@ def js_data_gen(assemblies, contigs_fpaths, chromosomes_length, output_dirpath, 
             })
 
 
-
-    # Генерация HTML с объединёнными графиками
     all_chr_template_fpath = html_saver.get_real_path("all_chromosomes_template.html")
     all_chr_html_fpath = os.path.join(output_all_files_dir_path, "all_chromosomes.html")
     html_saver.save_icarus_html(
@@ -375,3 +384,5 @@ def js_data_gen(assemblies, contigs_fpaths, chromosomes_length, output_dirpath, 
 
 
     return main_menu_fpath
+
+

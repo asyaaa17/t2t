@@ -247,6 +247,16 @@ max_references = 50
 plot_extension = "pdf"
 supported_plot_extensions = ['emf', 'eps', 'pdf', 'png', 'ps', 'raw', 'rgba', 'svg', 'svgz']
 
+
+
+# ideogram options
+DEFAULT_MAX_DISTANCE = 50000
+DEFAULT_MIN_ALIGNMENT_LEN = 1000
+
+max_distance = DEFAULT_MAX_DISTANCE
+min_alignment_len = DEFAULT_MIN_ALIGNMENT_LEN
+
+
 ###
 output_dirpath = None
 reference = None

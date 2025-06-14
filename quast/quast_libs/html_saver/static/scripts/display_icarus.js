@@ -33,8 +33,8 @@ function drawChromosome(chrName, containerId) {
     var chrLength = chromosomes_len[chrName];
 
     var svgWidth = 1000;
-    var laneHeight = 22; 
-    var marginTop = 30; 
+    var laneHeight = 22;
+    var marginTop = 30;
     var marginLeft = 60;
 
     var assemblyLabels = Object.keys(contigs);
@@ -64,11 +64,33 @@ function drawChromosome(chrName, containerId) {
         .range([marginLeft, svgWidth - 40]);
 
     // X-axis
+    // Создание и вызов оси
     var xAxis = d3.svg.axis()
         .scale(xScale)
         .orient('bottom')
         .ticks(6)
         .tickFormat(formatLongNumbers);
+
+    var xAxisGroup = svg.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(0,' + (svgHeight - 20) + ')')
+        .call(xAxis);
+
+
+    var ticks = xAxisGroup.selectAll(".tick text");
+
+
+    if (!ticks.empty()) {
+        var lastTick = ticks[0][ticks[0].length - 1];
+        d3.select(lastTick).text(formatLongNumbers(chrLength));
+    }
+
+    xAxisGroup.selectAll("path, line")
+        .style("fill", "none")
+        .style("stroke", "#000")
+        .style("stroke-width", "0.5px"); 
+
+
 
     svg.append('g')
         .attr('class', 'x axis')
@@ -78,6 +100,10 @@ function drawChromosome(chrName, containerId) {
         .style("fill", "none")
         .style("stroke", "#000")
         .style("stroke-width", "0.5px");
+
+
+
+
 
     assemblyLabels.forEach(function (label, idx) {
         var contigList = contigs[label];
@@ -90,7 +116,7 @@ function drawChromosome(chrName, containerId) {
             .attr("font-size", "12px")
             .attr("fill", colorScale(idx));
 
-            svg.selectAll("rect_" + label)
+        svg.selectAll("rect_" + label)
             .data(contigList)
             .enter()
             .append("rect")
@@ -109,7 +135,7 @@ function drawChromosome(chrName, containerId) {
             })
 
             .attr("class", function (d) {
-                let laneClass = "lane_" + label;  
+                let laneClass = "lane_" + label;
                 let centromereClass = "";
 
                 if (d.name && d.name.toLowerCase().includes("centromere")) {
@@ -126,7 +152,7 @@ function drawChromosome(chrName, containerId) {
 
             .attr("stroke", "#000")
             .attr("stroke-width", 0.5)
-            .on("click", function (d, i) { 
+            .on("click", function (d, i) {
                 console.log("[Клик по rect]:", d);
                 handleBlockClick(d, this);
             })
@@ -180,7 +206,7 @@ function drawChromosome(chrName, containerId) {
 
 function handleBlockClick(blockData, element) {
     const clicked = d3.select(element);
-    
+
     if (selectedBlockElement === element) {
         clicked.attr("stroke-width", 0.5).attr("stroke", "#000");
         selectedBlockElement = null;
@@ -310,7 +336,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var contigSets = contig_data[chr];
         for (var label in contigSets) {
             var blocks = contigSets[label];
-            window.items.push(...blocks);   
+            window.items.push(...blocks);
 
         }
     }

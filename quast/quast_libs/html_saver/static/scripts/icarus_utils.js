@@ -570,22 +570,28 @@ function showMisassemblies() {
 
 
 function changeMisassembledStatus(block) {
-    var msTypes = block.misassemblies.split(';');
+    // Страхуемся: если нет misassemblies или это не строка, делаем пустую строку
+    let msStr = typeof block.misassemblies === "string" ? block.misassemblies : "";
+    var msTypes = msStr.split(';');
+
     var isMisassembled = "False";
     for (var i = 0; i < msTypes.length; i++) {
-        if (msTypes[i] && document.getElementById(msTypes[i]).checked) isMisassembled = "True";
+        if (msTypes[i] && document.getElementById(msTypes[i]) && document.getElementById(msTypes[i]).checked)
+            isMisassembled = "True";
     }
-    if (isMisassembled == "True" && block.misassembled == "False") {
+    // objClass должен быть строкой!
+    if (typeof block.objClass !== "string") block.objClass = "";
+
+    if (isMisassembled === "True" && block.misassembled === "False") {
         block.objClass = block.objClass.replace("disabled", "misassembled");
-    }
-    else if (isMisassembled == "False")
+    } else if (isMisassembled === "False") {
         block.objClass = block.objClass.replace(/\bmisassembled\b/g, "disabled");
+    }
     block.misassembled = isMisassembled;
     //    console.log(`[changeMisassembledStatus] FINAL ${block.name} → objClass = ${block.objClass}, misassembled = ${block.misassembled}`);
-
-
     return block;
 }
+
 
 
 function hideUncheckedMisassemblies(track) {

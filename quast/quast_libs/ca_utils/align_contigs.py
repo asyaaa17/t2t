@@ -16,6 +16,7 @@ import datetime
 from quast_libs import qconfig, qutils
 from quast_libs.ca_utils.analyze_misassemblies import Mapping
 from quast_libs.ca_utils.misc import minimap_fpath, parse_cs_tag
+from quast_libs.qconfig import max_distance, min_alignment_len
 
 from quast_libs.log import get_logger
 from quast_libs.qconfig import SPLIT_ALIGN_THRESHOLD
@@ -102,8 +103,10 @@ def get_aux_out_fpaths(fname):
 
 def parse_minimap_output(raw_coords_fpath, coords_fpath):
     cigar_pattern = re.compile(r'(\d+[M=XIDNSH])')
-    MAX_DISTANCE = 50000
-    MIN_ALIGNMENT_LEN = 1000  # фильтрация мелких блоков
+    MAX_DISTANCE = max_distance
+    MIN_ALIGNMENT_LEN = min_alignment_len
+    print(f"[DEBUG] Using MAX_DISTANCE={MAX_DISTANCE}, MIN_ALIGNMENT_LEN={MIN_ALIGNMENT_LEN}")
+
 
     def flush_alignment(align):
         if align.len2 < MIN_ALIGNMENT_LEN:
