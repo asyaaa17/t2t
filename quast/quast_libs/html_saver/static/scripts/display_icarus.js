@@ -88,7 +88,7 @@ function drawChromosome(chrName, containerId) {
     xAxisGroup.selectAll("path, line")
         .style("fill", "none")
         .style("stroke", "#000")
-        .style("stroke-width", "0.5px"); 
+        .style("stroke-width", "0.5px");
 
 
 
@@ -152,6 +152,12 @@ function drawChromosome(chrName, containerId) {
 
             .attr("stroke", "#000")
             .attr("stroke-width", 0.5)
+
+            // подсветка
+            .attr("data-name", d => d.name)
+
+
+
             .on("click", function (d, i) {
                 console.log("[Клик по rect]:", d);
                 handleBlockClick(d, this);
@@ -204,33 +210,42 @@ function drawChromosome(chrName, containerId) {
 
 
 
+let selectedBlockName = null;
+
 function handleBlockClick(blockData, element) {
+    const name = blockData.name;
     const clicked = d3.select(element);
 
-    if (selectedBlockElement === element) {
-        clicked.attr("stroke-width", 0.5).attr("stroke", "#000");
-        selectedBlockElement = null;
+    d3.selectAll('rect[data-name]')
+        .attr('stroke-width', 0.5)
+        .attr('stroke', '#000')
+        .attr('stroke-dasharray', null);
+
+    if (selectedBlockName === name) {
+        selectedBlockName = null;
         clearInfoPanel();
-        if (floatingInfoBox) {
-            floatingInfoBox.remove();
-            floatingInfoBox = null;
-        }
+        if (floatingInfoBox) { floatingInfoBox.remove(); floatingInfoBox = null; }
         return;
     }
 
-    if (selectedBlockElement !== null) {
-        d3.select(selectedBlockElement)
-            .attr("stroke-width", 0.5)
-            .attr("stroke", "#000");
-    }
 
-    clicked.attr("stroke-width", 2.5).attr("stroke", "#000");
-    selectedBlockElement = element;
+    d3.selectAll(`rect[data-name="${name}"]`)
+        .filter(function () { return this !== element; })
+        .attr('stroke', '#f00')
+        .attr('stroke-width', 2)
+        .attr('stroke-dasharray', '8,4');
+
+
+    clicked
+        .attr('stroke-width', 2.5)
+        .attr('stroke', '#f00')
+        .attr('stroke-dasharray', null);
+
+    selectedBlockName = name;
+
 
     updateInfoPanel(blockData);
-    console.log("blockData:", blockData);
 
-    // dlete 
     if (floatingInfoBox) {
         floatingInfoBox.remove();
         floatingInfoBox = null;
@@ -243,7 +258,6 @@ function handleBlockClick(blockData, element) {
         `${blockData.name || "Contig"}, Start: ${formatLongNumbers(blockData.start)}, End: ${formatLongNumbers(blockData.end)}`
     ];
 
-    // dinamic
     const tempSvg = d3.select("body").append("svg").attr("visibility", "hidden");
     let maxWidth = 0;
     lines.forEach(line => {
@@ -253,23 +267,17 @@ function handleBlockClick(blockData, element) {
         tempText.remove();
     });
     tempSvg.remove();
-
     const boxWidth = maxWidth + 20;
     const lineHeight = 14;
     const boxHeight = lines.length * lineHeight + 8;
 
-    // check
-    const svgNode = svg.node();
-    const svgWidth = +svgNode.getAttribute("width");
+    const svgWidth = +svg.node().getAttribute("width");
     let adjustedX = x;
     if (x + boxWidth > svgWidth - 10) {
         adjustedX = svgWidth - boxWidth - 10;
     }
 
-    // create box
-    floatingInfoBox = svg.append("g")
-        .attr("class", "floating-info");
-
+    floatingInfoBox = svg.append("g").attr("class", "floating-info");
     floatingInfoBox.append("rect")
         .attr("x", adjustedX)
         .attr("y", y - boxHeight - 5)
@@ -278,18 +286,18 @@ function handleBlockClick(blockData, element) {
         .attr("fill", "#fff")
         .attr("stroke", "#333")
         .attr("stroke-width", 1)
-        .attr("rx", 4)
-        .attr("ry", 4);
+        .attr("rx", 4).attr("ry", 4);
 
     lines.forEach((line, i) => {
         floatingInfoBox.append("text")
             .attr("x", adjustedX + 6)
-            .attr("y", y - boxHeight + 14 * i + 8)
+            .attr("y", y - boxHeight + lineHeight * i + 8)
             .attr("font-size", "12px")
             .attr("fill", "#000")
             .text(line);
     });
 }
+
 
 
 function formatLongNumbers(d) {

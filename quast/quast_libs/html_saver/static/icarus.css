@@ -717,7 +717,7 @@ path {
 
 #side_panels_container {
     position: fixed;
-    top: 150px;
+    top: 250px;
     right: 110px;
     width: 250px;
     z-index: 10;
@@ -738,7 +738,7 @@ path {
 
 
 #legend_panel {
-    pointer-events: auto;
+    margin-top: 180px;
 }
 
 
@@ -757,13 +757,20 @@ path {
 
 /* Отступ между элементами легенды */
 #legend_panel .legend-item {
-  margin-bottom: 8px;
+    margin-bottom: 8px;
 }
 
 /* Немного сдвинем и уменьшенный текст */
 #legend_panel .legend-note {
-  display: block;
-  margin-left: 40px;
-  font-size: 0.85em;
-  margin-top: 2px;
+    display: block;
+    margin-left: 40px;
+    font-size: 0.85em;
+    margin-top: 2px;
+}
+
+
+#stats_panel .collapsible-header .sub-id {
+    font-size: 0.8em;
+    color: #555;
+    margin-left: 4px;
 }

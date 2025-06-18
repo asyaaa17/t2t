@@ -64,120 +64,12 @@
 
 
 
-
-
-<!-- Контейнер для визуализации хромосом -->
 <div id="chart"></div>
 
 
-
-
-
-<div id="stats_panel" class="info_box" style="font-size: 12px; line-height: 1.4; text-align: left;">
-
-    <!-- Assembly statistics -->
-    <div class="collapsible-section">
-        <div class="collapsible-header" onclick="toggleSection(this)"><b>Assembly statistics</b></div>
-        <div class="collapsible-content">
-            <b>Assembly:</b> HG002.1<br />
-            <b>Total length:</b> 2,958,633,312 bp<br />
-            <b># contigs:</b> 610<br />
-            <b>N50:</b> 84,969,781 bp<br />
-            <b>L50:</b> 14<br />
-            <b>Largest contig:</b> 183,079,594 bp<br />
-            <b>Genome fraction (%):</b> 91.370<br />
-        </div>
-    </div>
-
-    <!-- K-mer statistics -->
-    <div class="collapsible-section">
-        <div class="collapsible-header" onclick="toggleSection(this)"><b>K-mer statistics</b></div>
-        <div class="collapsible-content">
-            <b>Assembly:</b> HG002_1_JAHKSE010000001.1<br />
-            <b>K-mer-based compl. (%):</b> 83.12<br />
-            <b>K-mer-based cor. length (%):</b> 75.45<br />
-            <b>K-mer-based mis. length (%):</b> 24.50<br />
-            <b>K-mer-based undef. length (%):</b> 0.05<br />
-            <b># k-mer-based misjoins:</b> 3<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;<b># translocations:</b> 1<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;<b># 100kbp relocations:</b> 2<br />
-        </div>
-    </div>
-</div>
-
-<!-- CSS стили -->
-<style>
-    .collapsible-header {
-        cursor: pointer;
-        margin: 10px 0;
-        font-size: 16px;
-        font-weight: bold;
-        color: #333;
-    }
-
-    .collapsible-content {
-        display: none;
-        margin-left: 15px;
-        font-size: 13px;
-    }
-
-    .collapsible-header.open::before {
-        content: "▼ ";
-    }
-
-    .collapsible-header::before {
-        content: "▶ ";
-    }
-
-
-
-    #misassemblies_selector_panel {
-        display: block;
-        margin-top: 10px;
-        font-size: 14px;
-
-    }
-
-
-    #misassemblies_checkboxes_div {
-        margin-top: 4px;
-    }
-
-
-    #misassemblies_checkboxes_div label {
-        font-size: inherit;
-        margin-right: 12px;
-        display: inline-flex;
-        align-items: center;
-    }
-
-
-    #misassemblies_checkboxes_div input[type="checkbox"] {
-        transform: scale(1.2);
-        transform-origin: center center;
-        margin-right: 6px;
-    }
-</style>
-
-
-
-<script>
-    function toggleSection(header) {
-        header.classList.toggle("open");
-        const content = header.nextElementSibling;
-        if (content.style.display === "block") {
-            content.style.display = "none";
-        } else {
-            content.style.display = "block";
-        }
-    }
-</script>
-
 <div id="side_panels_container">
-
     <div id="legend_panel" class="info_box">
         <div class="legend-title">Legend</div>
-
         <div class="legend-items">
             <div class="legend-item">
                 <svg width="35" height="22" style="vertical-align: middle;">
@@ -185,24 +77,19 @@
                 </svg>
                 correct contigs
             </div>
-
             <div class="legend-item">
                 <svg width="35" height="22" style="vertical-align: middle;">
                     <rect width="35" height="22" class="misassembled"></rect>
                 </svg>
                 misassembled blocks
             </div>
-
             <div class="legend-item">
                 <svg width="35" height="22" style="vertical-align: middle;">
                     <rect width="35" height="22" class="unchecked_misassembly"></rect>
                 </svg>
                 unchecked
-                <small class="legend-note">
-                    misassembled blocks (see checkboxes)
-                </small>
+                <small class="legend-note">misassembled blocks (see checkboxes)</small>
             </div>
-
             <div class="legend-item">
                 <svg width="35" height="22" style="vertical-align: middle;">
                     <rect width="35" height="22" fill="url(#centromerePattern)"></rect>
@@ -211,53 +98,34 @@
             </div>
         </div>
     </div>
-
 </div>
 
-
-
-
-
-
-
-
 <script>
-    function adjustLegend() {
-        const stats = document.getElementById('stats_panel');
-        const legend = document.getElementById('legend_panel');
-        const rect = stats.getBoundingClientRect();
-        const newTop = rect.top + stats.offsetHeight + 10;
-        legend.style.position = 'fixed';
-        legend.style.top = newTop + 'px';
+    function toggleSection(header) {
+        header.classList.toggle("open");
+        const content = header.nextElementSibling;
+        content.style.display = content.style.display === "block" ? "none" : "block";
     }
 
-    const oldToggle = window.toggleSection;
-    window.toggleSection = function (header) {
-        oldToggle(header);
-        setTimeout(adjustLegend, 50);
-    };
+    function adjustLegend() {
+        const legend = document.getElementById('legend_panel');
+        legend.style.position = 'fixed';
+        legend.style.top = (10) + 'px';  
+    }
 
-    document.addEventListener('DOMContentLoaded', adjustLegend);
+    document.addEventListener('DOMContentLoaded', () => {
+        adjustLegend();
+        initAllChromosomesVisualization();
+    });
 </script>
 
 
 
 
-
-
-
-
-
-
-
-
-
-<!-- Секция с данными (вставляется скриптом) -->
 {.section data}
 {@}
 {.end}
 
-<!-- Скрипты -->
 <script type="text/javascript">
     window.onbeforeunload = function () {
         window.scrollTo(0, 0);
