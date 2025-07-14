@@ -937,4 +937,3 @@ def parse_options(logger, quast_args):
 
     return quast_py_args, contigs_fpaths
 
-

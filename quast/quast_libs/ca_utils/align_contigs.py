@@ -400,4 +400,3 @@ def replace_centromeric_blocks(aligned_blocks, label, contigs):
     return sorted(result, key=lambda b: b.start)
 
 
-

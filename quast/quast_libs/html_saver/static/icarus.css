@@ -330,7 +330,7 @@ path {
 
 .mainItem {
     stroke: black;
-    fill: #059B00;
+    fill: #4daf4a;
 }
 
 .miniItem {
@@ -353,7 +353,7 @@ path {
 }
 
 .mainItem.misassembled {
-    fill: #D00000;
+    fill: #DD4343;
 }
 
 .mainItem.misassembled.similar {
@@ -369,11 +369,11 @@ path {
 }
 
 .mainItem.disabled {
-    fill: #757575;
+    fill: #8e8e8e;
 }
 
 .mainItem.unaligned {
-    fill: #757575;
+    fill: #8e8e8e;
 }
 
 .mainItem.unknown {
@@ -385,7 +385,7 @@ path {
 }
 
 .mainItem.correct_unaligned {
-    fill: #206040;
+    fill: #4daf4a;
 }
 
 .predicted_gene {
@@ -703,15 +703,15 @@ path {
 
 
 .correct {
-    fill: #059B00;
+    fill: #4daf4a;
 }
 
 .misassembled {
-    fill: #D00000;
+    fill: #DD4343;
 }
 
 .unchecked_misassembly {
-    fill: #757575;
+    fill: #8e8e8e;
 }
 
 

@@ -14,7 +14,7 @@ from collections import defaultdict
 
 from quast_libs import fastaparser, qconfig, qutils
 from quast_libs.icarus_utils import Alignment, Contig
-from quast_libs.ca_utils.align_contigs import replace_centromeric_blocks  # если ещё не импортировано
+from quast_libs.ca_utils.align_contigs import replace_centromeric_blocks 
 
 
 def parse_aligner_contig_report(report_fpath, ref_names, cumulative_ref_lengths, label=None):

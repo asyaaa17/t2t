@@ -551,15 +551,11 @@ function showMisassemblies() {
     for (var numItem = 0; numItem < items.length; numItem++) {
         if (items[numItem].misassemblies) {
             items[numItem] = changeMisassembledStatus(items[numItem]);
-            //        console.log(`[showMisassemblies] Block ${items[numItem].name} → objClass = ${items[numItem].objClass}`);
-            if (items[numItem].triangles && items[numItem].triangles.length > 0) {
+            if (items[numItem].triangles && items[numItem].triangles.length > 0)
                 for (var i = 0; i < items[numItem].triangles.length; i++) {
-                    if (!items[numItem].triangles[i].objClass) {
-                        items[numItem].triangles[i].objClass = "misassembled";
-                    }
+                    if (!items[numItem].triangles[i].objClass) items[numItem].triangles[i].objClass = "misassembled";
                     items[numItem].triangles[i] = changeMisassembledStatus(items[numItem].triangles[i]);
                 }
-            }
         }
     }
     hideUncheckedMisassemblies(itemsContainer);
@@ -567,37 +563,23 @@ function showMisassemblies() {
     refreshMisArrows();
 }
 
-
-
 function changeMisassembledStatus(block) {
-    // Страхуемся: если нет misassemblies или это не строка, делаем пустую строку
-    let msStr = typeof block.misassemblies === "string" ? block.misassemblies : "";
-    var msTypes = msStr.split(';');
-
+    var msTypes = block.misassemblies.split(';');
     var isMisassembled = "False";
     for (var i = 0; i < msTypes.length; i++) {
-        if (msTypes[i] && document.getElementById(msTypes[i]) && document.getElementById(msTypes[i]).checked)
-            isMisassembled = "True";
+        if (msTypes[i] && document.getElementById(msTypes[i]).checked) isMisassembled = "True";
     }
-    // objClass должен быть строкой!
-    if (typeof block.objClass !== "string") block.objClass = "";
-
-    if (isMisassembled === "True" && block.misassembled === "False") {
+    if (isMisassembled == "True" && block.misassembled == "False") {
         block.objClass = block.objClass.replace("disabled", "misassembled");
-    } else if (isMisassembled === "False") {
-        block.objClass = block.objClass.replace(/\bmisassembled\b/g, "disabled");
     }
+    else if (isMisassembled == "False")
+        block.objClass = block.objClass.replace(/\bmisassembled\b/g, "disabled");
     block.misassembled = isMisassembled;
-    //    console.log(`[changeMisassembledStatus] FINAL ${block.name} → objClass = ${block.objClass}, misassembled = ${block.misassembled}`);
     return block;
 }
 
-
-
 function hideUncheckedMisassemblies(track) {
-    const selection = typeof track.selectAll === 'function' ? track : d3.select(track);
-
-    selection.selectAll('.block')
+    track.selectAll('.block')
         .classed('misassembled', function (block) {
             if (block && block.misassemblies) {
                 if (block.misassembled) return block.misassembled == 'True';
@@ -610,8 +592,7 @@ function hideUncheckedMisassemblies(track) {
                 return !checkMsTypeToShow(block);
             }
         });
-
-    selection.selectAll('path')
+    track.selectAll('path')
         .classed('misassembled', function (block) {
             if (block && block.misassemblies)
                 return checkMsTypeToShow(block);
@@ -912,12 +893,9 @@ function getContigColorByMark(mark) {
     else if (mark.startsWith('N') && 'Nx' in contigsColors) {
         return contigsColors['Nx'];
     }
-
     else {
         return '#000000';
     }
-    console.log("🎨 Цвет для метки:", mark, "=>", color);
-
 }
 
 function addGradient(d, marks, gradientExists, smoothGradient) {
@@ -926,33 +904,29 @@ function addGradient(d, marks, gradientExists, smoothGradient) {
     marks = marks.split(', ');
     if (marks.length == 1) return getContigColorByMark(marks[0]);
     if (gradientExists) return 'url(#' + gradientId + ')';
-    var defs = chart.select("defs");
-    if (defs.empty()) {
-        defs = chart.append("defs");
-    }
-    var gradient = defs.append("linearGradient")
+    var gradient = chart.append("svg:defs")
+        .append("svg:linearGradient")
         .attr("id", gradientId);
     if (!smoothGradient) {
         gradient.attr("x1", "0%")
             .attr("y1", "0%")
             .attr("x2", "0%")
             .attr("y2", "100%");
-        var gradientSteps = ["50%", "50%"];
-        for (var m = 0; m < marks.length; m++) {
-            gradient.append("stop")
+        gradientSteps = ["50%", "50%"];
+        for (var m = 0; m < marks.length; m++)
+            gradient.append("svg:stop")
                 .attr("offset", gradientSteps[m])
                 .attr("stop-color", getContigColorByMark(marks[m]))
                 .attr("stop-opacity", 1);
-        }
-    } else {
+    }
+    else {
         gradient.attr("x1", "0%")
             .attr("y1", "0%")
             .attr("x2", "100%")
             .attr("y2", "100%");
         var colors = [];
-        for (var m = 0; m < marks.length; m++) {
-            colors.push(getContigColorByMark(marks[m]));
-        }
+        for (var m = 0; m < marks.length; m++)
+            colors.push(getContigColorByMark(marks[m]))
         var colorScale = d3.scale.linear().range(colors);
         gradient.selectAll("stop")
             .data(colorScale.range())
@@ -960,6 +934,7 @@ function addGradient(d, marks, gradientExists, smoothGradient) {
             .attr("offset", function (d, i) { return i / (colorScale.range().length - 1); })
             .attr("stop-color", function (d) { return d; });
     }
+
     return 'url(#' + gradientId + ')';
 }
 

@@ -675,10 +675,9 @@ def process_misassembled_contig(sorted_aligns, is_cyclic, aligned_lengths, regio
                 contig_aligned_lengths = contig_aligned_lengths[:-1]
 
     aligned_lengths.extend(contig_aligned_lengths)
-
-    
     assert contig_aligned_length <= len(contig_seq), "Internal QUAST bug: contig aligned length is greater than " \
                                                      "contig length (contig: %s, len: %d, aligned: %d)!" % \
                                                      (sorted_aligns[0].contig, contig_aligned_length, len(contig_seq))
 
     return is_misassembled, misassembly_internal_overlap, indels_info, cnt_misassemblies, contig_aligned_length
+

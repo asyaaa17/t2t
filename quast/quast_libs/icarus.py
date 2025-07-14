@@ -28,6 +28,7 @@ import re
 import json
 import logging
 
+
 from collections import defaultdict
 from quast_libs import qconfig, qutils, fastaparser, genome_analyzer
 from quast_libs.ca_utils.misc import ref_labels_by_chromosomes
@@ -137,9 +138,7 @@ def natural_sort(string_):
     return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string_)]
 
 
-import os
-import re
-import logging
+
 def delete_individual_chr_html(viewers_dir):
     for fname in os.listdir(viewers_dir):
         if (re.match(r'chr\d+\.html$', fname)
@@ -315,8 +314,6 @@ def js_data_gen(assemblies, contigs_fpaths, chromosomes_length, output_dirpath, 
 
     )
 
-
-
     contigs_sizes_str, too_many_contigs = get_contigs_data(contigs_by_assemblies, nx_marks, assemblies_n50, structures_by_labels,
                                                            contig_names_by_refs, chr_names, chr_full_names)
     all_data = assemblies_data + assemblies_contig_size_data + contigs_sizes_str
@@ -384,5 +381,4 @@ def js_data_gen(assemblies, contigs_fpaths, chromosomes_length, output_dirpath, 
 
 
     return main_menu_fpath
-
 

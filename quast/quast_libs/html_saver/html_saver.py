@@ -86,9 +86,13 @@ icarus_js_files = [
     'jquery-ui.js',
     'bootstrap/bootstrap.min.js',
     'scripts/build_icarus.js',
+    'scripts/build_icarus_all.js',
     'scripts/display_icarus.js',
+    'scripts/display_icarus_all.js',
     'scripts/icarus_interface.js',
+    'scripts/icarus_interface_all.js',
     'scripts/icarus_utils.js',
+    'scripts/icarus_utils_all.js',
 ]
 
 def js_html(script_rel_path):
@@ -525,14 +529,3 @@ def save_icarus_links(results_dirpath, icarus_links):
 def save_icarus_data(results_dirpath, icarus_data, keyword, as_text=True):
     if results_dirpath:
         json_saver.save_icarus_data(results_dirpath, keyword, icarus_data, as_text)
-
-
-def save_all_chromosomes_html(template_fpath, html_fpath, data_dict):
-    with open(template_fpath) as f:
-        html = f.read()
-    # Здесь используется шаблонизатор,
-    # который обрабатывает блоки {.section data}{@} и {.end}
-    # Если data_dict['all_chr_data'] пуст, то внутри блока ничего не подставится.
-    html = jsontemplate.expand(html, data_dict)
-    with open(html_fpath, 'w') as f_html:
-        f_html.write(html)
