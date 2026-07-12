@@ -326,36 +326,81 @@ class ExtendedMapping(Mapping):
         self.end_in_contig = None
 
 
-centromere_regions = {
-    "chr1": (121619169, 142242033),
-    "chr2": (92300802, 94695067),
-    "chr3": (90804701, 96415026),
-    "chr4": (49705154, 55303192),
-    "chr5": (46830042, 50962194),
-    "chr6": (58286706, 61058390),
-    "chr7": (60410644, 63714499),
-    "chr8": (44243546, 46325080),
-    "chr9": (44938599, 76694047),
-    "chr10": (39633793, 41926237),
-    "chr11": (51023358, 54476419),
-    "chr12": (34593492, 37202490),
-    "chr13": (0, 17508596),
-    "chr14": (0, 12708411),
-    "chr15": (0, 17694466),
-    "chr16": (35834066, 52219756),
-    "chr17": (23433372, 27571319),
-    "chr18": (15641581, 21121235),
-    "chr19": (24570766, 29769351),
-    "chr20": (26383658, 32969590),
-    "chr21": (0, 11306378),
-    "chr22": (0, 15711065),
-    "chrX": (57819763, 60927195)
+def load_centromere_regions(bed_fpath):
+    regions = {}
+
+    if not isfile(bed_fpath):
+        logger.warning(
+            "Centromere BED file not found: %s. Centromere blocks will not be used."
+            % bed_fpath
+        )
+        return regions
+
+    with open(bed_fpath) as f:
+        for line in f:
+            line = line.strip()
+
+            if not line or line.startswith("#"):
+                continue
+
+            fields = line.split()
+
+            if len(fields) < 3:
+                continue
+
+            ref_name = fields[0]
+            start = int(fields[1])
+            end = int(fields[2])
+
+            regions[ref_name] = (start, end)
+
+    return regions
+
+
+CENTROMERES_DIR = os.path.join(os.path.dirname(__file__), "centromeres")
+
+CENTROMERE_BEDS = {
+    "human": os.path.join(CENTROMERES_DIR, "human_CHM13.bed"),
+    "chicken": os.path.join(CENTROMERES_DIR, "chicken_GGswu.bed"),
 }
 
+
+def get_centromere_bed_fpath():
+    # Optional explicit BED path, useful later for other animals
+    custom_bed = getattr(qconfig, "centromeres_bed", None)
+    if custom_bed:
+        return custom_bed
+
+    species = getattr(qconfig, "centromeres_species", "human")
+
+    if species not in CENTROMERE_BEDS:
+        logger.warning(
+            "Unknown centromere species: %s. Falling back to human centromeres."
+            % species
+        )
+        species = "human"
+
+    return CENTROMERE_BEDS[species]
+
+
+centromere_regions = None
+
+
+def get_centromere_regions():
+    global centromere_regions
+
+    if centromere_regions is None:
+        bed_fpath = get_centromere_bed_fpath()
+        logger.info("Using centromere BED file: %s" % bed_fpath)
+        centromere_regions = load_centromere_regions(bed_fpath)
+
+    return centromere_regions
 
 def replace_centromeric_blocks(aligned_blocks, label, contigs):
     from collections import defaultdict
 
+    centromere_regions = get_centromere_regions()
+    
     result = []
     centromere_coords = defaultdict(lambda: {"start": None, "end": None})
 

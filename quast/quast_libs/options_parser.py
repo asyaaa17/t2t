@@ -575,7 +575,19 @@ def parse_options(logger, quast_args):
             help='Minimum length of alignment block (default: %d)' % qconfig.min_alignment_len
         )),
 
+        # Centromere BED selection
+        (['--chicken'], dict(
+            dest='centromeres_species',
+            action='store_const',
+            const='chicken',
+            help='Use chicken GGswu centromere BED file instead of human CHM13 centromeres.')
+         ),
 
+        (['--centromeres-bed'], dict(
+            dest='centromeres_bed',
+            type='file',
+            help='Path to a custom BED file with centromere coordinates.')
+         ),
 
 
         (['--min-identity'], dict(

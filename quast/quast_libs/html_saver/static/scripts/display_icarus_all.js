@@ -1,6 +1,88 @@
 let selectedBlockElement = null;
 let floatingInfoBox = null;
 
+function safeCssName(value) {
+    return String(value).replace(/[^A-Za-z0-9_-]/g, "_");
+}
+
+
+function formatAssemblyStatValue(value) {
+    if (value === undefined || value === null || value === "") {
+        return "—";
+    }
+
+    value = String(value);
+
+    if (/^\d+$/.test(value)) {
+        return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    return value;
+}
+
+
+function renderAssemblyStatsPanel() {
+    if (!window.assemblyStats) {
+        console.warn("Assembly statistics not found");
+        return;
+    }
+
+    var container = document.getElementById("side_panels_container");
+
+    if (!container) {
+        container = document.createElement("div");
+        container.id = "side_panels_container";
+        document.body.appendChild(container);
+    }
+
+    var oldPanel = document.getElementById("assembly_stats_panel");
+    if (oldPanel) {
+        oldPanel.remove();
+    }
+
+    var stats = window.assemblyStats;
+
+    var rows = [
+        ["Assembly", stats.assembly],
+        ["Total length", stats.total_length],
+        ["# contigs", stats.num_contigs],
+        ["N50", stats.n50],
+        ["L50", stats.l50],
+        ["Largest contig", stats.largest_contig],
+        ["Genome fraction", stats.genome_fraction]
+    ];
+
+    var panel = document.createElement("div");
+    panel.id = "assembly_stats_panel";
+    panel.className = "info_box";
+
+    var title = document.createElement("div");
+    title.className = "legend-title";
+    title.textContent = "Assembly statistics";
+    panel.appendChild(title);
+
+    var table = document.createElement("table");
+    table.className = "assembly-stats-table";
+
+    rows.forEach(function(row) {
+        var tr = document.createElement("tr");
+
+        var th = document.createElement("th");
+        th.textContent = row[0];
+
+        var td = document.createElement("td");
+        td.textContent = formatAssemblyStatValue(row[1]);
+
+        tr.appendChild(th);
+        tr.appendChild(td);
+        table.appendChild(tr);
+    });
+
+    panel.appendChild(table);
+    container.appendChild(panel);
+}
+
+
 
 function initAllChromosomesVisualization() {
     var chartContainer = document.getElementById("chart");
@@ -22,7 +104,7 @@ function initAllChromosomesVisualization() {
 
         var chrDiv = document.createElement("div");
         chrDiv.className = "chromosome_chart";
-        chrDiv.id = "chart_" + chrName;
+        chrDiv.id = "chart_" + safeCssName(chrName);
         chartContainer.appendChild(chrDiv);
 
         drawChromosome(chrName, chrDiv.id);
@@ -42,7 +124,7 @@ function drawChromosome(chrName, containerId) {
     var svgHeight = laneHeight * assemblyLabels.length + marginTop + 20;
     var colorScale = d3.scale.category10();
 
-    var svg = d3.select("#" + containerId)
+    var svg = d3.select(document.getElementById(containerId))
         .append("svg")
         .attr("width", svgWidth)
         .attr("height", svgHeight);
@@ -89,6 +171,7 @@ function drawChromosome(chrName, containerId) {
 
     assemblyLabels.forEach(function (label, idx) {
         var contigList = contigs[label];
+        var safeLabel = safeCssName(label);
         var y0 = marginTop + laneHeight * idx;
 
         // Имя дорожки (assembly)
@@ -100,7 +183,7 @@ function drawChromosome(chrName, containerId) {
             .attr("fill", colorScale(idx));
 
         // Прямоугольники (блоки)
-        svg.selectAll("rect_" + label)
+        svg.selectAll(".rect_" + safeLabel)
             .data(contigList)
             .enter()
             .append("rect")
@@ -115,7 +198,7 @@ function drawChromosome(chrName, containerId) {
                 return colorScale(idx);
             })
             .attr("class", function (d) {
-                let laneClass = "lane_" + label;
+                let laneClass = "lane_" + safeLabel;
                 let centromereClass = "";
                 if (d.name && d.name.toLowerCase().includes("centromere")) {
                     centromereClass = " centromere_block";
@@ -157,11 +240,11 @@ function drawChromosome(chrName, containerId) {
         });
 
 
-        svg.selectAll(".triangle_" + label)
+        svg.selectAll(".triangle_" + safeLabel)
             .data(triangles)
             .enter()
             .append("path")
-            .attr("class", "block end misassembled mis_triangle triangle_" + label)
+            .attr("class", "block end misassembled mis_triangle triangle_" + safeLabel)
             .attr("d", function (d) {
                 const size = 7;
                 const xStart = xScale(d.start);
@@ -210,8 +293,11 @@ function handleBlockClick(blockData, element) {
     }
 
 
-    d3.selectAll(`rect[data-name="${name}"]`)
-        .filter(function () { return this !== element; })
+    
+    d3.selectAll('rect[data-name]')
+        .filter(function () {
+            return this !== element && this.getAttribute('data-name') === name;
+        })
         .attr('stroke', '#f00')
         .attr('stroke-width', 2)
         .attr('stroke-dasharray', '8,4');
@@ -319,6 +405,7 @@ function clearInfoPanel() {
 
 document.addEventListener("DOMContentLoaded", function () {
     initAllChromosomesVisualization();
+    renderAssemblyStatsPanel();
     window.items = [];
     for (var chr in contig_data) {
         var contigSets = contig_data[chr];

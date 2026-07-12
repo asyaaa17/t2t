@@ -256,6 +256,9 @@ DEFAULT_MIN_ALIGNMENT_LEN = 1000
 max_distance = DEFAULT_MAX_DISTANCE
 min_alignment_len = DEFAULT_MIN_ALIGNMENT_LEN
 
+# centromere BED options
+centromeres_species = "human"
+centromeres_bed = None
 
 ###
 output_dirpath = None
@@ -446,6 +449,8 @@ def usage(show_hidden=False, mode=None, short=True, stream=sys.stdout):
             stream.write("-e  --eukaryote                       Genome is eukaryotic (primarily affects gene prediction)\n")
             stream.write("    --fungus                          Genome is fungal (primarily affects gene prediction)\n")
             stream.write("    --large                           Use optimal parameters for evaluation of large genomes\n")
+            stream.write("    --chicken                         Use chicken GGswu centromere BED file instead of human CHM13 centromeres\n")
+            stream.write("    --centromeres-bed <filename>      Custom BED file with centromere coordinates\n")    
             stream.write("                                      In particular, imposes '-e -m %d -i %d -x %d' (can be overridden manually)\n" %
                          (LARGE_MIN_CONTIG, LARGE_MIN_ALIGNMENT, LARGE_EXTENSIVE_MIS_THRESHOLD))
         stream.write("-k  --k-mer-stats                     Compute k-mer-based quality metrics (recommended for large genomes)\n"

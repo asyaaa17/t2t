@@ -301,6 +301,24 @@ def main(args):
     if icarus_html_fpath:
         logger.main_info('  Icarus (contig browser) is saved to %s' % icarus_html_fpath)
 
+
+
+        # Add assembly statistics panel to all_chromosomes.html
+    try:
+        stats_injector_fpath = os.path.join(
+            qconfig.QUAST_HOME,
+            'add_assembly_stats_to_icarus.py'
+        )
+
+        if os.path.isfile(stats_injector_fpath):
+            import subprocess
+            subprocess.check_call([sys.executable, stats_injector_fpath, output_dirpath])
+            logger.main_info('  Assembly statistics panel was added to Icarus all_chromosomes.html')
+        else:
+            logger.warning('Assembly statistics injector was not found: %s' % stats_injector_fpath)
+    except Exception as e:
+        logger.warning('Failed to add assembly statistics panel to Icarus: %s' % e)    
+
     cleanup(corrected_dirpath)
     return logger.finish_up(check_test=qconfig.test)
 
