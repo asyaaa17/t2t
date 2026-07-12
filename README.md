@@ -17,7 +17,6 @@ The workflow was originally developed for haplotype-resolved human assemblies ag
 - **Custom centromere BED support**: users can provide their own BED file with `--centromeres-bed`.
 - **Interactive all-chromosomes ideogram**: displays all reference chromosomes in one HTML page.
 - **Assembly statistics panel**: shows key QUAST metrics directly in the Icarus all-chromosomes viewer.
-- **Improved JavaScript selector handling**: supports chromosome and assembly names containing dots, such as `CP100555.1`.
 
 ---
 
@@ -72,34 +71,28 @@ Default behavior:
 ### Human CHM13 example
 
     python quast.py \
-      -r ../../chm13v2.0_chr.fa.gz \
+      -r path/to/CHM13_reference.fa.gz \
       --large \
       --no-snps \
-      -l "HG00408_pat" \
-      -o ../../quast_output_HG00408_pat_vs_CHM13_human_default \
-      ../../HG00408_pat_hprc_r2_v1_0_1.fa.gz
+      path/to/assembly.fasta
 
 ### Chicken GGswu example
 
     python quast.py \
       --chicken \
-      -r ../../GGswu.fa.gz \
+      -r path/to/GGswu_reference.fa.gz \
       --large \
       --no-snps \
-      -l "Nr7_polished" \
-      -o ../../quast_output_Nr7_polished_vs_GGswu_github_cenpa_centromeres \
-      ~/polishing_demo_Nr7/S15863Nr7_polished.fasta
+      path/to/assembly.fasta
 
 ### Custom centromere BED example
 
     python quast.py \
       --centromeres-bed path/to/custom_centromeres.bed \
-      -r reference.fa.gz \
+      -r path/to/reference.fa.gz \
       --large \
       --no-snps \
-      -l "assembly_label" \
-      -o output_dir \
-      assembly.fasta
+      path/to/assembly.fasta
 
 ---
 
